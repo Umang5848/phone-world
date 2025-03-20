@@ -8,6 +8,7 @@ const multer = require('multer');
 const fs = require('fs');
 const nodemailer = require('nodemailer');
 const qrcode = require('qrcode');
+require('dotenv').config();
 
 const app = express();
 
@@ -31,18 +32,18 @@ app.set('view engine', 'ejs');
 //    2) DB CONNECTIONS
 // ------------------------------
 const authDB = mysql.createConnection({
-  host: 'sql12.freesqldatabase.com',
-  user: 'sql12768683',
-  password: 'N3JQHGB7ZM',
-  database: 'sql12768683'
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_AUTH_DATABASE
 });
 
 const productDB = mysql.createConnection({
-  host: 'sql12.freesqldatabase.com',
-  user: 'sql12768683',
-  password: 'N3JQHGB7ZM',
-  database: 'sql12768683'
-});
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_PRODUCT_DATABASE
+}); 
 
 authDB.connect(err => {
   if (err) throw err;
@@ -61,8 +62,8 @@ productDB.connect(err => {
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'phoneworld.ksv@gmail.com',
-    pass: 'skdh qimq splg yzhc'
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
   }
 });
 
@@ -549,8 +550,9 @@ app.get('/admin/order-history', (req, res) => {
 // ======================
 //    START SERVER
 // ======================
-app.listen(3000, () => {
-  console.log('Server running on port 3000');
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
 
 
@@ -564,7 +566,6 @@ app.listen(3000, () => {
 
 
 
-
 app.get('/', (req, res) => {
-  res.send('Welcome to Phone World! Ngrok is working.');
+  res.send('Welcome to Phone World!');
 });
