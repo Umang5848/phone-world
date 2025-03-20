@@ -1,0 +1,122 @@
+CREATE TABLE users (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    username VARCHAR(50) DEFAULT NULL,
+    password VARCHAR(50) DEFAULT NULL,
+    PRIMARY KEY (id)
+);
+
+
+
+url: http://localhost:3000/login.html
+
+
+dbname : testdb
+
+file structure : 
+C:\Users\Umang\Desktop\phoneworld/
+├── phoneworld/
+│   ├── .env   
+│   ├── app.js 
+│   ├── autorun.bat
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── phone_world.sql
+│   ├── sqlquery.txt
+│   ├── testdb.sql
+│   ├── public/
+│   │   ├── about.html
+│   │   ├── auth.html
+│   │   ├── cart.html
+│   │   ├── checkout.html
+│   │   ├── contactus.html
+│   │   ├── payment.html
+│   │   ├── products.html
+│   │   ├── sni.html
+│   │   ├── verify-otp.html
+│   │   ├── admin/
+│   │   │   ├── add-product.html
+│   │   │   ├── admin-login.html
+│   │   │   ├── admin.css
+│   │   │   ├── admin.js
+│   │   │   ├── manage-products.html
+│   │   │   ├── order-history.html
+│   │   │   ├── orders.html
+│   │   │   ├── upload.png
+│   │   ├── css/
+│   │   │   ├── style.css
+│   │   ├── img/
+│   │   │   ├── avatar.svg
+│   │   │   ├── bg.svg
+│   │   │   ├── wave.png
+│   │   │   ├── sliders/
+│   │   │   │   ├── infinixgt20pro.jpg
+│   │   │   │   ├── iphone16pro.jpg
+│   │   │   │   ├── iphone16sliders.jpg
+│   │   │   │   ├── pixel8aslider.jpg
+│   │   │   │   ├── Vivit3pslider1.jpg
+│   │   ├── js/
+│   │   │   ├── auth.js
+│   │   │   ├── main.js
+│   ├── qrforpayments/
+│   │   ├── um-37-qr.png
+│   │   ├── bha/
+│   │   │   ├── bha-14-qr-code.png
+│   │   ├── um/
+│   │   │   ├── order-38.png
+│   │   │   ├── order-39.png
+│   │   │   ├── order_41.png
+│   │   │   ├── order_42.png
+│   │   │   ├── um-1-qr-code.png
+│   │   │   ├── um-10-qr-code.png
+│   │   │   ├── um-11-qr-code.png
+│   │   │   ├── um-12-qr-code.png
+│   │   │   ├── um-13-qr-code.png
+│   │   │   ├── um-15-qr-code.png
+│   │   │   ├── um-16-qr-code.png
+│   │   │   ├── um-17-qr-code.png
+│   │   │   ├── um-18-qr-code.png
+│   │   │   ├── um-19-qr-code.png
+│   │   │   ├── um-2-qr-code.png
+│   │   │   ├── um-20-qr-code.png
+│   │   │   ├── um-21-qr-code.png
+│   │   │   ├── um-22-qr-code.png
+│   │   │   ├── um-23-qr-code.png
+│   │   │   ├── um-24-qr-code.png
+│   │   │   ├── um-25-qr-code.png
+│   │   │   ├── um-26-qr-code.png
+│   │   │   ├── um-29-qr-code.png
+│   │   │   ├── um-3-qr-code.png
+│   │   │   ├── um-30-qr-code.png
+│   │   │   ├── um-31-qr-code.png
+│   │   │   ├── um-32-qr-code.png
+│   │   │   ├── um-33-qr-code.png
+│   │   │   ├── um-34-qr-code.png
+│   │   │   ├── um-35-qr-code.png
+│   │   │   ├── um-4-qr-code.png
+│   │   │   ├── um-5-qr-code.png
+│   │   │   ├── um-6-qr-code.png
+│   │   │   ├── um-7-qr-code.png
+│   │   │   ├── um-8-qr-code.png
+│   │   │   ├── um-9-qr-code.png
+│   ├── uploads/
+│   │   ├── 1738300544097.webp
+│   │   ├── 1738420862161.webp
+│   │   ├── 1738421069961.webp
+│   │   ├── 1738429961339.webp
+│   │   ├── 1739013862476.jpg
+│   │   ├── 1739334695305.jpg
+│   │   ├── 1739384490335.jpg
+│   │   ├── 1739972066901.jpg
+│   │   ├── 1739973211389.jpg
+│   │   ├── 1739973340516.jpg
+│   │   ├── 1739973636888.jpg
+│   │   ├── 1739973730191.jpg
+│   │   ├── 1739973790891.jpg
+│   │   ├── 1739973919846.jpg
+│   │   ├── 1739977784050.jpg
+│   │   ├── 1741274590803.png
+│   │   ├── 1741287965493.jpg
+│   │   ├── 1741288003684.png
+│   │   ├── 1741359719667.png
+│   ├── views/
+│   │   ├── homepage.ejs

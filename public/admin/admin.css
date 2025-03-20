@@ -1,0 +1,265 @@
+/* Base Styles */
+body { 
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  background-color: #f5f7fa;
+  color: #333;
+}
+
+/* Admin Navigation */
+.admin-nav {
+  background: #2c3e50;
+  color: white;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: background 0.3s;
+}
+
+.nav-links a:hover {
+  background: #34495e;
+}
+
+.nav-links a.active {
+  background: #32BE8F;
+}
+
+/* Admin Container */
+.admin-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+/* Product Grid */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+/* Product Items */
+.product-item {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: transform 0.2s;
+}
+
+.product-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.product-item img {
+  border-radius: 6px;
+  object-fit: contain;
+  width: 100%;
+  height: 200px;
+  border: 2px solid #eee;
+  background: #f8f9fa;
+  padding: 5px;
+}
+
+.product-details {
+  margin-top: 15px;
+}
+
+.product-details p {
+  margin: 5px 0;
+  color: #555;
+}
+
+.product-details p strong {
+  color: #2c3e50;
+}
+
+/* Order List */
+.order-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.order-item {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.order-item p {
+  margin: 5px 0;
+  color: #555;
+}
+
+.order-item p strong {
+  color: #2c3e50;
+}
+
+/* Edit Modal */
+#editModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+#editModal.hidden {
+  display: none !important;
+}
+
+#editModal:not(.hidden) {
+  display: flex !important;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 700px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+}
+
+.modal-content-wrapper {
+  display: flex;
+  gap: 25px;
+  margin-top: 15px;
+}
+
+.image-column {
+  flex: 1;
+  text-align: center;
+}
+
+#editImagePreview {
+  width: 100%;
+  max-width: 250px;
+  height: 250px;
+  object-fit: contain;
+  border: 2px solid #eee;
+  border-radius: 8px;
+  background: #f8f9fa;
+  margin-bottom: 15px;
+  padding: 5px;
+}
+
+.form-column {
+  flex: 2;
+}
+
+/* Buttons */
+.btn-primary { 
+  background-color: #32BE8F; 
+  width: 100%;
+  font-size: 18px;
+}
+
+.btn-danger { 
+  background-color: #ff4444;
+  margin-top: 10px;
+  font-size: 18px;
+}
+
+button {
+  padding: 12px 25px;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: transform 0.2s, opacity 0.2s;
+  color:#ffffff;
+  border: 1px solid #e0e0e0;
+  cursor: pointer;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  opacity: 0.9;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .admin-nav {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  .nav-links {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+  
+  .modal-content-wrapper {
+    flex-direction: column;
+  }
+  
+  #editImagePreview {
+    max-width: 200px;
+    height: 200px;
+  }
+}
+
+/* Add to existing CSS */
+.order-list {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.order-item {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.order-item p {
+  margin: 10px 0;
+  font-size: 15px;
+  color: #444;
+}
+
+.order-item p strong {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+.error-message {
+  background: #ffe3e3;
+  color: #ff4444;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  margin-top: 20px;
+  border: 1px solid #ffc9c9;
+}
+
+.btn-danger {
+  margin-top: 15px;
+  width: auto;
+  padding: 10px 20px;
+}

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Verify OTP - PhoneWorld</title>
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <style>
+    .otp-container {
+      max-width: 400px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .otp-input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body >
+  <div class="otp-container">
+    <h2>Verify Email</h2>
+    <p>Check your email for the OTP</p>
+    <form action="/verify-otp" method="POST">
+      <input type="text" name="otp" class="otp-input" placeholder="Enter OTP" required>
+      <button type="submit" class="btn">Verify</button>
+    </form>
+    <div id="popup" class="popup"></div>
+  </div>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const message = urlParams.get('message');
+    if (message) {
+      const popup = document.getElementById('popup');
+      popup.innerText = message;
+      popup.classList.add('active');
+      setTimeout(() => {
+        popup.classList.remove('active');
+      }, 2000);
+    }
+  </script>
+</body>
+</html>

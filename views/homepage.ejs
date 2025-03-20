@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Phone World - Home</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --primary-color: #32BE8F;
+      --secondary-color: #2c3e50;
+    }
+
+    .featured-section {
+      padding: 3rem 0;
+      background-color: #f8f9fa;
+    }
+
+    .section-title {
+      color: var(--secondary-color);
+      margin-bottom: 2rem;
+      text-align: center;
+      font-weight: 700;
+      
+    }
+
+    
+    /* Updated Product Card Styles */
+    .product-card {
+      width: 250px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      transition: 0.3s ease-in-out;
+      text-align: center;
+      margin: auto;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .product-image img {
+      width: 80%;
+      height: auto;
+      margin-top: 10px;
+    }
+
+    .product-info {
+      padding: 15px;
+    }
+
+    .product-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .product-price {
+      font-size: 16px;
+      color: #000000;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    .view-button {
+      display: inline-block;
+      padding: 8px 15px;
+      font-size: 14px;
+      color: white;
+      background: #32BE8F;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: 0.3s;
+    }
+
+    .view-button:hover {
+      background: #158c64;
+    }
+
+    .category-card {
+      background: white;
+      border-radius: 10px;
+      padding: 1.5rem;
+      text-align: center;
+      transition: all 0.3s;
+      border: 2px solid var(--primary-color);
+      
+
+      
+    }
+
+    .category-card:hover {
+      background: var(--primary-color);
+      color: white;
+    }
+    .card-img-top
+    {
+      
+      width: 150px;
+    }
+    .usp-section {
+      background: var(--secondary-color);
+      color: white;
+      padding: 3rem 0;
+    }
+
+    .usp-icon {
+      font-size: 2.5rem;
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+    }
+
+    footer {
+      background: var(--secondary-color);
+      color: white;
+      padding: 2rem 0;
+      margin-top: 3rem;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark" style="margin-bottom: 10px;">
+  <div class="container-fluid">
+    <!-- Brand/Logo -->
+    <svg width="130" height="50" viewBox="0 0 714 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+        
+      <rect x="2.5" y="2.5" width="709" height="125" rx="27.5" stroke="#32BE8F" stroke-width="5"/>
+      <path d="M390.826 98L373.138 36.1818H387.415L397.648 79.1346H398.161L409.45 36.1818H421.675L432.934 79.2251H433.477L443.71 36.1818H457.987L440.299 98H427.561L415.789 57.5827H415.306L403.564 98H390.826ZM518.303 67.0909C518.303 73.8321 517.026 79.5672 514.47 84.2962C511.934 89.0251 508.473 92.6372 504.086 95.1325C499.72 97.6076 494.81 98.8452 489.356 98.8452C483.863 98.8452 478.933 97.5975 474.566 95.1023C470.199 92.607 466.748 88.9949 464.213 84.266C461.677 79.537 460.409 73.812 460.409 67.0909C460.409 60.3497 461.677 54.6146 464.213 49.8857C466.748 45.1567 470.199 41.5547 474.566 39.0795C478.933 36.5843 483.863 35.3366 489.356 35.3366C494.81 35.3366 499.72 36.5843 504.086 39.0795C508.473 41.5547 511.934 45.1567 514.47 49.8857C517.026 54.6146 518.303 60.3497 518.303 67.0909ZM505.052 67.0909C505.052 62.7242 504.398 59.0417 503.09 56.0433C501.802 53.045 499.981 50.7711 497.627 49.2216C495.273 47.6721 492.516 46.8974 489.356 46.8974C486.197 46.8974 483.44 47.6721 481.086 49.2216C478.731 50.7711 476.9 53.045 475.592 56.0433C474.304 59.0417 473.66 62.7242 473.66 67.0909C473.66 71.4576 474.304 75.1402 475.592 78.1385C476.9 81.1368 478.731 83.4107 481.086 84.9602C483.44 86.5097 486.197 87.2844 489.356 87.2844C492.516 87.2844 495.273 86.5097 497.627 84.9602C499.981 83.4107 501.802 81.1368 503.09 78.1385C504.398 75.1402 505.052 71.4576 505.052 67.0909ZM527.985 98V36.1818H552.374C557.043 36.1818 561.027 37.0169 564.328 38.6871C567.648 40.3372 570.173 42.6816 571.904 45.7202C573.655 48.7386 574.53 52.2904 574.53 56.3754C574.53 60.4805 573.645 64.0121 571.874 66.9702C570.103 69.9081 567.537 72.1619 564.177 73.7315C560.836 75.3011 556.791 76.0859 552.042 76.0859H535.712V65.5817H549.929C552.425 65.5817 554.497 65.2396 556.147 64.5554C557.798 63.8712 559.025 62.8449 559.83 61.4766C560.655 60.1082 561.068 58.4078 561.068 56.3754C561.068 54.3228 560.655 52.5922 559.83 51.1836C559.025 49.775 557.787 48.7084 556.117 47.984C554.467 47.2395 552.384 46.8672 549.869 46.8672H541.055V98H527.985ZM561.369 69.8679L576.733 98H562.305L547.273 69.8679H561.369ZM583.766 98V36.1818H596.836V87.2241H623.339V98H583.766ZM653.908 98H631.994V36.1818H654.089C660.307 36.1818 665.66 37.4194 670.147 39.8945C674.635 42.3495 678.086 45.8812 680.501 50.4893C682.936 55.0975 684.153 60.6113 684.153 67.0305C684.153 73.4699 682.936 79.0038 680.501 83.6321C678.086 88.2604 674.615 91.8121 670.087 94.2873C665.579 96.7624 660.186 98 653.908 98ZM645.064 86.8015H653.365C657.228 86.8015 660.478 86.1173 663.114 84.7489C665.771 83.3604 667.763 81.2173 669.091 78.3196C670.439 75.4018 671.113 71.6387 671.113 67.0305C671.113 62.4626 670.439 58.7298 669.091 55.832C667.763 52.9343 665.781 50.8013 663.145 49.4329C660.508 48.0645 657.259 47.3803 653.395 47.3803H645.064V86.8015Z" fill="#32BE8F"/>
+      <rect x="12" y="11" width="344" height="108" rx="30" fill="#32BE8F"/>
+      <path d="M37.6268 96V34.1818H62.016C66.7047 34.1818 70.6991 35.0773 73.9993 36.8683C77.2995 38.6391 79.8149 41.1042 81.5455 44.2635C83.2962 47.4027 84.1715 51.0249 84.1715 55.13C84.1715 59.2351 83.2861 62.8572 81.5153 65.9964C79.7444 69.1357 77.1787 71.5806 73.8182 73.3313C70.4777 75.082 66.433 75.9574 61.684 75.9574H46.1389V65.4833H59.571C62.0864 65.4833 64.1591 65.0507 65.7891 64.1854C67.4392 63.3 68.6667 62.0825 69.4716 60.533C70.2966 58.9634 70.7092 57.1624 70.7092 55.13C70.7092 53.0774 70.2966 51.2865 69.4716 49.7571C68.6667 48.2076 67.4392 47.0103 65.7891 46.1651C64.139 45.2998 62.0462 44.8672 59.5107 44.8672H50.6967V96H37.6268ZM92.661 96V34.1818H105.731V59.6879H132.263V34.1818H145.303V96H132.263V70.4638H105.731V96H92.661ZM212.886 65.0909C212.886 71.8321 211.609 77.5672 209.053 82.2962C206.517 87.0251 203.056 90.6372 198.669 93.1325C194.303 95.6076 189.393 96.8452 183.939 96.8452C178.446 96.8452 173.516 95.5975 169.149 93.1023C164.782 90.607 161.331 86.9949 158.796 82.266C156.26 77.537 154.992 71.812 154.992 65.0909C154.992 58.3497 156.26 52.6146 158.796 47.8857C161.331 43.1567 164.782 39.5547 169.149 37.0795C173.516 34.5843 178.446 33.3366 183.939 33.3366C189.393 33.3366 194.303 34.5843 198.669 37.0795C203.056 39.5547 206.517 43.1567 209.053 47.8857C211.609 52.6146 212.886 58.3497 212.886 65.0909ZM199.635 65.0909C199.635 60.7242 198.981 57.0417 197.673 54.0433C196.386 51.045 194.564 48.7711 192.21 47.2216C189.856 45.6721 187.099 44.8974 183.939 44.8974C180.78 44.8974 178.023 45.6721 175.669 47.2216C173.314 48.7711 171.483 51.045 170.175 54.0433C168.887 57.0417 168.243 60.7242 168.243 65.0909C168.243 69.4576 168.887 73.1402 170.175 76.1385C171.483 79.1368 173.314 81.4107 175.669 82.9602C178.023 84.5097 180.78 85.2844 183.939 85.2844C187.099 85.2844 189.856 84.5097 192.21 82.9602C194.564 81.4107 196.386 79.1368 197.673 76.1385C198.981 73.1402 199.635 69.4576 199.635 65.0909ZM274.275 34.1818V96H262.985L236.091 57.092H235.638V96H222.568V34.1818H234.038L260.722 73.0597H261.265V34.1818H274.275ZM285.073 96V34.1818H326.728V44.9577H298.143V59.6879H324.585V70.4638H298.143V85.2241H326.849V96H285.073Z" fill="#212529"/>
+      </svg>
+
+    <!-- Toggler -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navbar Links + EJS Logic -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/homepage">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/products.html">Products</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about.html">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/contactus.html">Contact us</a>
+        </li>
+      </ul>
+
+      <!-- EJS-based login/logout (remove if not using EJS) -->
+      <div class="mx-2">
+        <% if (username) { %>
+          <span style="color:white;">
+            Hello, <%= username %>
+          </span>
+          <button class="btn btn-success" onclick="logout()">Logout</button>
+        <% } else { %>
+          <a href="/signup" class="btn btn-success" role="button">Signup</a>
+          <a href="/login" class="btn btn-success" role="button">Login</a>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</nav>
+<!-- END NAVBAR -->
+
+<!-- CAROUSEL (Next/Prev buttons are functional but their icons are invisible) -->
+<div class="carousel slide mx-1 mb-3" id="carouselExampleIndicators" data-bs-ride="carousel">
+  <!-- Indicators -->
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0"
+            class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+            aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+            aria-label="Slide 3"></button>
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3"
+            aria-label="Slide 4"></button>
+  </div>
+
+  <!-- Slides -->
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <a href="/products-page?search=Infinix%20GT%2020%20Pro">
+        <img class="d-block w-100" src="/img/sliders/infinixgt20pro.jpg" alt="Infinix GT20 Pro">
+      </a>
+    </div>
+    <div class="carousel-item">
+      <a href="/products-page?search=iPhone%2016">
+        <img class="d-block w-100" src="/img/sliders/iphone16sliders.jpg" alt="iPhone 16">
+      </a>
+    </div>
+    <div class="carousel-item">
+      <a href="/products-page?search=Pixel%208a">
+        <img class="d-block w-100" src="/img/sliders/pixel8aslider.jpg" alt="Pixel 8a">
+      </a>
+    </div>
+    <div class="carousel-item">
+      <a href="/products-page?search=Vivo%20T3%20ultra">
+        <img class="d-block w-100" src="/img/sliders/Vivit3pslider1.jpg" alt="Vivo T3 Pro">
+      </a>
+    </div>
+  </div>
+
+  <!-- Controls (buttons work, but their icons are invisible) -->
+  <button class="carousel-control-prev" type="button"
+          data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true" style="opacity: 0;"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button"
+          data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true" style="opacity: 0;"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+<!-- END CAROUSEL -->
+
+<!-- Featured Products Section -->
+<section class="featured-section">
+  <div class="container">
+    <h2 class="section-title">Featured Products</h2>
+    <div class="row justify-content-center g-4">
+      <div class="col-md-3">
+        <div class="product-card">
+          <div class="product-image">
+            <img src="/img/sliders/iphone16pro.jpg" alt="iPhone 16 Pro">
+          </div>
+          <div class="product-info">
+            <div class="product-title">iPhone 16 Pro</div>
+            <div class="product-price">₹1,60,999</div>
+            <a href="/products-page?search=iPhone%2016%20Pro" class="view-button">View Details</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="product-card">
+          <div class="product-image">
+            <img src="/img/sliders/iphone16pro.jpg" alt="iPhone 16 Pro">
+          </div>
+          <div class="product-info">
+            <div class="product-title">iPhone 16 Pro</div>
+            <div class="product-price">₹1,60,999</div>
+            <a href="/products-page?search=iPhone%2016%20Pro" class="view-button">View Details</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="product-card">
+          <div class="product-image">
+            <img src="/img/sliders/iphone16pro.jpg" alt="iPhone 16 Pro">
+          </div>
+          <div class="product-info">
+            <div class="product-title">iPhone 16 Pro</div>
+            <div class="product-price">₹1,60,999</div>
+            <a href="/products-page?search=iPhone%2016%20Pro" class="view-button">View Details</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="product-card">
+          <div class="product-image">
+            <img src="/img/sliders/iphone16pro.jpg" alt="iPhone 16 Pro">
+          </div>
+          <div class="product-info">
+            <div class="product-title">iPhone 16 Pro</div>
+            <div class="product-price">₹1,60,999</div>
+            <a href="/products-page?search=iPhone%2016%20Pro" class="view-button">View Details</a>
+          </div>
+        </div>
+      </div>
+      <!-- Add more product cards as needed -->
+    </div>
+  </div>
+</section>
+
+<!-- Categories Section -->
+<section class="categories-section py-5">
+  <div class="container">
+    <h2 class="section-title">Shop By Brand</h2>
+    <div class="row g-4">
+      <div class="col-md-3">
+        <a href="/products-page?search=apple" class="category-card" style="text-decoration: none; color: inherit; display: block; text-align: center; padding: 20px; border: 2px solid green; border-radius: 10px;">
+
+          <i class="fa-brands fa-apple fa-3x"></i>
+          <h4 class="mt-3">Apple</h4>
+        </a>
+      </div>
+
+           
+      <div class="col-md-3">
+        <a href="/products-page?search=google" class="category-card" style="text-decoration: none; color: inherit; display: block; text-align: center; padding: 20px; border: 2px solid green; border-radius: 10px;">
+            <i class="fa-brands fa-google fa-3x"></i>
+            <h4 class="mt-3">Google</h4>
+        </a>
+    </div>
+    
+      <!-- Add more categories as needed -->
+      <div class="col-md-3">
+        <a href="/products-page?search=vivo"  class="category-card" style="text-decoration: none; color: inherit; display: block; text-align: center; padding: 20px; border: 2px solid green; border-radius: 10px;">
+
+          
+      <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+width="90.000000pt" height="36.000000pt" viewBox="0 0 900.000000 321.000000"
+preserveAspectRatio="xMidYMid meet">
+
+<g transform="translate(0.000000,321.000000) scale(0.100000,-0.100000)"
+fill="#000000" stroke="none">
+<path d="M3151 2623 c-30 -12 -201 -198 -201 -218 0 -13 37 -59 97 -120 128
+-131 126 -131 256 0 60 61 97 107 97 119 0 26 -182 214 -213 220 -12 3 -28 2
+-36 -1z"/>
+<path d="M6640 2032 c-25 -8 -59 -21 -77 -29 -17 -7 -37 -13 -45 -13 -7 0 -33
+-14 -58 -30 -25 -16 -49 -30 -54 -30 -11 0 -66 -45 -129 -107 -49 -47 -157
+-194 -157 -213 0 -4 -12 -34 -26 -66 -71 -159 -70 -469 0 -627 14 -32 26 -62
+26 -67 0 -17 98 -153 146 -202 45 -46 158 -138 169 -138 3 0 33 -13 68 -29
+149 -68 122 -66 762 -66 527 0 584 2 625 17 25 10 52 18 60 18 21 0 134 58
+201 102 31 21 80 62 110 93 56 57 149 190 149 213 0 7 5 23 12 35 37 66 67
+213 68 331 0 81 -20 235 -35 271 -7 17 -20 47 -29 68 -9 21 -16 42 -16 46 0
+32 -183 261 -208 261 -5 0 -15 7 -22 15 -18 22 -151 101 -180 107 -29 7 -81
+25 -128 44 -51 22 -1168 18 -1232 -4z m1207 -280 c28 -10 57 -23 65 -29 7 -6
+23 -14 36 -18 32 -9 162 -133 179 -170 8 -16 25 -48 38 -70 14 -22 25 -53 25
+-70 0 -16 7 -60 16 -97 14 -57 15 -77 5 -120 -7 -29 -16 -76 -21 -105 -10 -65
+-59 -153 -119 -216 -52 -55 -154 -127 -179 -127 -10 0 -26 -6 -37 -13 -45 -30
+-151 -37 -596 -37 -348 0 -459 3 -513 14 -38 8 -74 20 -79 25 -6 6 -21 11 -32
+11 -12 0 -41 14 -63 30 -23 17 -46 30 -51 30 -5 0 -34 27 -64 60 -57 63 -117
+164 -117 196 0 11 -7 37 -15 59 -8 23 -14 76 -14 125 0 49 6 102 14 125 8 22
+15 49 15 59 0 23 51 116 92 169 28 35 115 106 167 135 13 8 49 22 80 32 52 17
+98 19 586 19 487 1 535 0 582 -17z"/>
+<path d="M417 2001 c-47 -31 -62 -60 -62 -126 0 -54 5 -66 40 -118 22 -32 45
+-66 50 -75 6 -9 22 -33 38 -53 15 -20 27 -40 27 -44 0 -4 14 -24 30 -45 17
+-21 30 -41 30 -45 0 -4 14 -24 30 -45 17 -21 30 -41 30 -45 0 -4 12 -22 28
+-40 26 -31 47 -63 84 -128 9 -17 21 -33 26 -36 7 -5 61 -82 102 -146 8 -13 42
+-63 75 -110 33 -48 67 -97 75 -110 216 -331 292 -396 514 -434 58 -10 178 14
+246 50 49 26 210 183 210 205 0 7 13 29 30 47 16 19 30 38 30 42 0 5 12 24 27
+44 16 20 92 133 171 251 79 118 148 217 153 218 5 2 9 8 9 12 0 5 21 39 47 77
+74 107 147 214 163 239 8 13 45 67 82 121 78 114 90 158 64 228 -12 30 -28 50
+-52 64 -45 27 -119 28 -157 2 -28 -18 -90 -97 -123 -156 -9 -16 -20 -32 -23
+-35 -3 -3 -10 -12 -16 -22 -5 -9 -37 -55 -70 -103 -33 -47 -64 -94 -70 -103
+-5 -9 -22 -33 -37 -53 -16 -20 -28 -40 -28 -44 0 -4 -12 -24 -27 -44 -16 -20
+-32 -43 -38 -52 -42 -67 -86 -127 -99 -138 -9 -7 -16 -18 -16 -23 0 -6 -14
+-27 -30 -48 -17 -21 -30 -41 -30 -45 0 -4 -13 -24 -30 -45 -16 -21 -30 -41
+-30 -44 0 -3 -19 -33 -42 -65 -24 -33 -59 -83 -78 -111 -74 -111 -145 -170
+-203 -170 -54 0 -112 41 -173 124 -56 75 -186 265 -209 304 -5 10 -21 33 -35
+52 -14 19 -29 42 -35 52 -5 9 -37 56 -70 103 -33 47 -67 96 -75 109 -8 14 -37
+57 -65 98 -27 40 -52 77 -54 83 -2 5 -27 41 -56 80 -60 83 -166 238 -179 263
+-25 48 -146 69 -199 33z"/>
+<path d="M3096 2001 c-15 -10 -37 -32 -47 -47 -18 -28 -19 -60 -19 -741 0
+-659 1 -714 18 -742 18 -34 86 -71 127 -71 37 0 86 23 115 55 l25 27 3 716 c3
+797 6 759 -63 802 -42 26 -120 27 -159 1z"/>
+<path d="M3637 2001 c-73 -48 -89 -147 -37 -219 17 -23 30 -45 30 -48 0 -3 14
+-23 30 -44 17 -21 30 -41 30 -44 0 -5 74 -111 99 -142 4 -5 14 -21 21 -35 7
+-13 16 -26 20 -29 5 -4 67 -93 95 -137 6 -9 33 -50 62 -92 28 -42 105 -154
+170 -249 65 -96 125 -184 133 -197 161 -247 245 -318 420 -355 69 -15 82 -15
+155 0 44 9 101 26 127 39 53 26 208 171 208 195 0 3 14 25 30 48 17 24 70 102
+118 173 49 72 125 184 170 250 45 66 88 128 95 139 6 10 31 45 55 77 23 33 42
+61 42 64 0 5 61 96 70 105 6 6 120 173 135 198 6 9 22 33 37 53 66 87 59 199
+-13 245 -51 32 -122 33 -166 2 -18 -13 -76 -88 -129 -168 -53 -80 -120 -178
+-148 -219 -28 -41 -58 -84 -66 -97 -72 -109 -216 -316 -227 -325 -7 -6 -13
+-15 -13 -19 0 -5 -24 -42 -52 -84 -29 -42 -57 -85 -63 -94 -5 -10 -21 -33 -35
+-52 -14 -19 -29 -42 -35 -51 -71 -116 -155 -189 -219 -189 -37 0 -109 40 -142
+80 -17 19 -53 69 -80 110 -28 41 -72 106 -97 143 -26 38 -47 71 -47 74 0 3
+-13 22 -29 42 -15 20 -75 106 -133 191 -100 149 -181 267 -295 432 -29 43 -53
+80 -53 83 0 13 -95 132 -118 147 -37 24 -118 24 -155 -1z"/>
+</g>
+      </svg>
+
+          <h4 class="mt-3">Vivo</h4>
+      </a>
+      </div>
+      <div class="col-md-3">
+        <a href="/products-page?search=Xiaomi"  class="category-card" style="text-decoration: none; color: inherit; display: block; text-align: center; padding: 20px; border: 2px solid green; border-radius: 10px;">
+
+          
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="-0.047298551905471165 -0.36 280.92729855190544 45.59" width="90pt" height="36pt"><path d="M158.12.7c-6.42 0-12.86.81-16.92 4.81s-5.64 10-5.64 17.38S137 36.16 141 40.16s10.66 5 17.08 5 12.86-.86 16.92-4.86 5.67-10 5.67-17.41-1.43-13.24-5.49-17.23S164.55.7 158.12.7zm9.75 32.82c-2.27 2.58-6.37 3-9.75 3s-7.47-.45-9.74-3S146 27.38 146 22.9s.15-7.95 2.41-10.54 5.9-3 9.74-3 7.48.45 9.74 3 2.41 6.05 2.41 10.54-.17 8.03-2.43 10.62zM69.1 1.49H60a.69.69 0 0 0-.7.69v41.49a.69.69 0 0 0 .7.69h9.1a.7.7 0 0 0 .7-.69V2.18a.7.7 0 0 0-.7-.69zM30.87 22.57L47 2.57a.66.66 0 0 0-.52-1.08H34.87a.9.9 0 0 0-.71.35L23.48 16 13.07 1.85a.9.9 0 0 0-.71-.36H.68a.66.66 0 0 0-.52 1.08l16.35 20.37L.14 43.29a.66.66 0 0 0 .52 1.07h11.68a.9.9 0 0 0 .72-.37L24 29.89 34.29 44a.91.91 0 0 0 .72.36h11.53a.66.66 0 0 0 .52-1.07zM252.33 4.64c-3.7-3.44-9.65-3.86-14.46-3.86-6.22 0-10.18 1.32-12.58 2.56h-1.67c-2.35-1.3-6.49-2.56-13-2.56-4.82 0-10.72.35-14.36 3.41-3 2.52-3.71 5.89-3.71 12.79v26.67a.7.7 0 0 0 .71.69h9.09a.7.7 0 0 0 .71-.69v-.09V21.7c0-4-.15-8.08.7-9.62.67-1.2 1.71-2.53 6.65-2.53 5.89 0 7.28.41 8.21 3a9.37 9.37 0 0 1 .38 2.56v28.54a.69.69 0 0 0 .7.69h9.09a.7.7 0 0 0 .71-.69V15.13a9.37 9.37 0 0 1 .38-2.56c.93-2.61 2.31-3 8.2-3 4.94 0 6 1.33 6.65 2.53.86 1.54.7 5.66.7 9.62v22a.7.7 0 0 0 .71.69h9.09a.7.7 0 0 0 .7-.69v-25c0-7.28-.23-10.95-3.6-14.08zM121.82 7.18C117.62 1.39 110-.36 102.14.06a56 56 0 0 0-15 2.66c-.88.33-.77 1.09-.78 1.55 0 1.53-.15 5.49-.14 7.1 0 .71.87 1 1.6.78a56.6 56.6 0 0 1 12.62-3c4.67-.38 11 0 12.76 2.65.83 1.26.87 3.19 1 5.16a78.77 78.77 0 0 0-11.51-.4c-3.35.15-9.69.44-13.5 2.44-3.06 1.63-4.86 3.11-5.82 5.87a17 17 0 0 0-.73 7.06c.56 5 2.28 7.43 4.61 9.15 3.67 2.72 8.31 4.15 17.89 3.94 12.75-.28 16.1-4.4 17.79-7.33 2.88-5 2.38-12.85 2.29-17.68-.03-2.01-.33-8.59-3.4-12.83zm-8.31 26.17c-1.2 2.53-5.49 2.92-8 3-4.7.21-8.16 0-10.4-1.08A5.12 5.12 0 0 1 92.4 31c-.08-1.63-.05-2.46.68-3.43 1.66-2.15 6-2.61 10.41-2.78a78.94 78.94 0 0 1 10.94.63c-.03 3.24-.24 6.5-.92 7.93zM280.17 1.49h-9.09a.7.7 0 0 0-.71.69v41.49a.7.7 0 0 0 .71.69h9.09a.7.7 0 0 0 .71-.69V2.18a.7.7 0 0 0-.71-.69z" fill="#040000"/></svg>
+
+          <h4 class="mt-3">Xiaomi</h4>
+      </a>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+<!-- Why Choose Us Section (Updated with 2 more USPs) -->
+<section class="usp-section">
+  <div class="container">
+    <h2 class="section-title">Why Choose Phone World?</h2>
+    <div class="row g-4">
+      <div class="col-md-3 text-center">
+        <i class="fas fa-shipping-fast usp-icon"></i>
+        <h4>Fast Delivery</h4>
+        <p>Get your order within 2-3 business days</p>
+      </div>
+      <div class="col-md-3 text-center">
+        <i class="fas fa-shield-alt usp-icon"></i>
+        <h4>Secure Payment</h4>
+        <p>100% secure payment gateway</p>
+      </div>
+      <div class="col-md-3 text-center">
+        <i class="fas fa-certificate usp-icon"></i>
+        <h4>Warranty</h4>
+        <p>1 year warranty on all products</p>
+      </div>
+      <div class="col-md-3 text-center">
+        <i class="fas fa-headset usp-icon"></i>
+        <h4>24/7 Customer Support</h4>
+        <p>We're here to help anytime, anywhere</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <h5>About Phone World</h5>
+        <p>Your trusted destination for the latest smartphones and accessories.</p>
+      </div>
+      <div class="col-md-4">
+        <h5>Quick Links</h5>
+        <ul class="list-unstyled">
+          <li><a href="/products-page" class="text-white">Shop Now</a></li>
+          <li><a href="/about.html" class="text-white">About Us</a></li>
+          <li><a href="/contactus.html" class="text-white">Contact</a></li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <h5>Connect With Us</h5>
+        <div class="social-links">
+          <a href="#" class="text-white me-3"><i class="fab fa-facebook"></i></a>
+          <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="text-white"><i class="fab fa-twitter"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- JS: Popper + Bootstrap 5 -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+        crossorigin="anonymous"></script>
+
+<!-- Logout Script (EJS usage) -->
+<script>
+  function logout() {
+    fetch('/logout')
+      .then(response => response.redirected)
+      .then(() => {
+        window.location.href = '/login';
+      });
+  }
+</script>
+
+</body>
+</html>
