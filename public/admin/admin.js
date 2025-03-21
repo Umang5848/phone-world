@@ -171,30 +171,36 @@ const closeEditModal = () => {
 };
 
 const submitUpdate = () => {
-  const formData = new FormData();
-  formData.append('name', document.getElementById('editName').value);
-  formData.append('price', document.getElementById('editPrice').value);
-  formData.append('specifications', document.getElementById('editSpecs').value);
-  formData.append('stock', document.getElementById('editStock').value);
-  
-  const imageInput = document.getElementById('editImage');
-  if (imageInput.files[0]) formData.append('image', imageInput.files[0]);
+  const productId = currentEditProduct.id; // Ensure product ID is set
+  const name = document.getElementById('editName').value;
+  const price = document.getElementById('editPrice').value;
+  const specifications = document.getElementById('editSpecs').value;
+  const stock = document.getElementById('editStock').value;
+  const image_url = document.getElementById('editImage').value; // Use URL instead of file upload
 
-  fetch(`/admin/update-product/${currentEditProduct.id}`, {
-    method: 'POST',
-    body: formData
+  fetch(`/admin/update-product/${productId}`, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name, price, specifications, stock, image_url }),
   })
-  .then(response => {
-    if (!response.ok) throw new Error('Update failed');
-    alert('Product updated successfully!');
-    closeEditModal();
-    fetchProducts();
+  .then(response => response.json())
+  .then(data => {
+      if (data.success) {
+          alert('Product updated successfully!');
+          closeEditModal();
+          fetchProducts(); // Refresh product list
+      } else {
+          alert('Failed to update product.');
+      }
   })
   .catch(error => {
-    console.error('Update error:', error);
-    alert('Failed to update product. Check console for details.');
+      console.error('Update error:', error);
+      alert('An error occurred while updating the product.');
   });
 };
+
 
 // Image Preview
 const setupImagePreview = () => {

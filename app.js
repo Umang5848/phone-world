@@ -4,10 +4,10 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const session = require('express-session');
 const ejs = require('ejs');
-const multer = require('multer');
-const fs = require('fs');
 const nodemailer = require('nodemailer');
 const qrcode = require('qrcode');
+const fs = require('fs');
+
 require('dotenv').config();
 
 const app = express();
@@ -18,7 +18,6 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/qrforpayments', express.static(path.join(__dirname, 'qrforpayments')));
 app.use(session({
   secret: 'secret',
@@ -43,7 +42,7 @@ const productDB = mysql.createConnection({
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_PRODUCT_DATABASE
-}); 
+});
 
 authDB.connect(err => {
   if (err) throw err;
@@ -68,18 +67,7 @@ const transporter = nodemailer.createTransport({
 });
 
 // ------------------------------
-//    4) MULTER SETUP
-// ------------------------------
-const storage = multer.diskStorage({
-  destination: './uploads/',
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
-  }
-});
-const upload = multer({ storage });
-
-// ------------------------------
-//    5) QR CODE UTILITY
+//    4) QR CODE UTILITY
 // ------------------------------
 const generateQRCode = (amount, username, orderId) => {
   return new Promise((resolve, reject) => {
@@ -229,9 +217,9 @@ app.post('/verify-otp', (req, res) => {
 //   PRODUCT + CART ROUTES
 // ======================
 
-app.post('/add-product', upload.single('image'), (req, res) => {
-  const { name, price, specifications, stock } = req.body;
-  const imagePath = `/uploads/${req.file.filename}`;
+app.post('/add-product', (req, res) => {
+  const { name, price, specifications, stock, image_url } = req.body;
+  const imagePath = image_url; // Directly use the URL
 
   productDB.query(
     'INSERT INTO products (name, price, specifications, image, stock) VALUES (?, ?, ?, ?, ?)',
@@ -244,16 +232,16 @@ app.post('/add-product', upload.single('image'), (req, res) => {
 });
 
 // NEW UPDATE PRODUCT ROUTE
-app.post('/admin/update-product/:id', upload.single('image'), (req, res) => {
+app.post('/admin/update-product/:id', (req, res) => {
   const productId = req.params.id;
-  const { name, price, specifications, stock } = req.body;
-  
+  const { name, price, specifications, stock, image_url } = req.body;
+
   productDB.query('SELECT * FROM products WHERE id = ?', [productId], (err, results) => {
     if (err) throw err;
     if (results.length === 0) return res.status(404).json({ success: false, message: 'Product not found' });
 
     const currentProduct = results[0];
-    const imagePath = req.file ? `/uploads/${req.file.filename}` : currentProduct.image;
+    const imagePath = image_url || currentProduct.image;
 
     productDB.query(
       `UPDATE products SET 
@@ -302,19 +290,19 @@ app.post('/add-to-cart', (req, res) => {
   if (!req.session.userId) return res.status(401).json({ message: 'Please login first' });
 
   const { productId, quantity } = req.body;
-  
+
   productDB.query(
     'SELECT stock FROM products WHERE id = ?',
     [productId],
     (err, results) => {
       if (err) throw err;
-      
+
       if (results.length === 0) {
         return res.status(404).json({ message: 'Product not found' });
       }
-      
+
       const availableStock = results[0].stock;
-      
+
       if (availableStock < quantity) {
         return res.status(400).json({
           message: `Only ${availableStock} items available in stock`
@@ -356,7 +344,7 @@ app.post('/remove-from-cart', (req, res) => {
   if (!req.session.userId) return res.status(401).json({ message: 'Please login first' });
 
   const { productId } = req.body;
-  
+
   productDB.query(
     'DELETE FROM cart WHERE user_id = ? AND product_id = ?',
     [req.session.userId, productId],
@@ -450,7 +438,7 @@ app.post('/checkout', async (req, res) => {
 // ======================
 app.post('/submit-transaction', (req, res) => {
   if (!req.session.userId) return res.status(401).json({ message: 'Please login first' });
-  
+
   const { orderId, transactionId } = req.body;
   if (!orderId || !transactionId) {
     return res.status(400).json({ success: false, message: 'Missing orderId or transactionId' });
