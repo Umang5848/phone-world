@@ -131,6 +131,7 @@
           const result = await response.json();
           if (result.success) {
             alert('Transaction ID submitted! Admin will verify it shortly.');
+            alert('Your order is successfully placed!');
             window.location.href = '/homepage';
           } else {
             alert('Error submitting transaction ID');
