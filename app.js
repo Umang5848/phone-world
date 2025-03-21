@@ -6,8 +6,6 @@ const session = require('express-session');
 const ejs = require('ejs');
 const nodemailer = require('nodemailer');
 const qrcode = require('qrcode');
-const fs = require('fs');
-
 require('dotenv').config();
 
 const app = express();
@@ -229,6 +227,7 @@ app.post('/add-product', (req, res) => {
       res.redirect('/admin/manage-products.html');
     }
   );
+  console.log(req.body);
 });
 
 // NEW UPDATE PRODUCT ROUTE
