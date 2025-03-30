@@ -5,18 +5,25 @@ CREATE TABLE users (
     PRIMARY KEY (id)
 );
 
+git push steps 
+
+git add .
+
+git commit -m "Updated"
+
+git push origin main
+
+
 
 
 url: http://localhost:3000/login.html
 
 
 dbname : testdb
-
-file structure : 
 C:\Users\Umang\Desktop\phoneworld/
 ├── phoneworld/
-│   ├── .env   
-│   ├── app.js 
+│   ├── .env
+│   ├── app.js
 │   ├── autorun.bat
 │   ├── package-lock.json
 │   ├── package.json
@@ -34,12 +41,12 @@ C:\Users\Umang\Desktop\phoneworld/
 │   │   ├── sni.html
 │   │   ├── verify-otp.html
 │   │   ├── admin/
-│   │   │   ├── add-product.html
-│   │   │   ├── admin-login.html
+│   │   │   ├── add-product.html    
+│   │   │   ├── admin-login.html    
 │   │   │   ├── admin.css
 │   │   │   ├── admin.js
 │   │   │   ├── manage-products.html
-│   │   │   ├── order-history.html
+│   │   │   ├── order-history.html  
 │   │   │   ├── orders.html
 │   │   │   ├── upload.png
 │   │   ├── css/

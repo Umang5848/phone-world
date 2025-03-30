@@ -7,6 +7,7 @@ const ejs = require('ejs');
 const nodemailer = require('nodemailer');
 const qrcode = require('qrcode');
 const fs = require('fs');
+const easyinvoice = require('easyinvoice');
 
 require('dotenv').config();
 
@@ -19,6 +20,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/qrforpayments', express.static(path.join(__dirname, 'qrforpayments')));
+// Serve invoices (we will force download via a dedicated route)
+app.use('/invoices', express.static(path.join(__dirname, 'invoices')));
 app.use(session({
   secret: 'secret',
   resave: false,
@@ -90,10 +93,55 @@ const generateQRCode = (amount, username, orderId) => {
   });
 };
 
-// ======================
-//      AUTH ROUTES
-// ======================
+// ------------------------------
+//    5) INVOICE GENERATION
+//    (Using order_items table to get actual product details)
+// ------------------------------
+const generateInvoiceWithItems = async (orderId, username, items) => {
+ 
+  const products = items.map(item => ({
+    quantity: item.quantity,
+    description: item.name,
+    tax: 0,
+    price: item.price
+  }));
 
+  const invoiceData = {
+    documentTitle: "Invoice",
+    currency: "USD",
+    taxNotation: "vat",
+    marginTop: 25,
+    marginRight: 25,
+    marginLeft: 25,
+    marginBottom: 25,
+    sender: {
+      company: "Phone World",
+      address: "KSV",
+      zip: "382028",
+      city: "Ghandhinagar",
+      country: "India"
+    },
+    client: {
+      company: username
+    },
+    invoiceNumber: orderId.toString(),
+    invoiceDate: new Date().toISOString().split('T')[0],
+    products,
+    bottomNotice: "Thank you for your business! This Project Was Created By J03 "
+  };
+
+  const result = await easyinvoice.createInvoice(invoiceData);
+  const invoiceFileName = `invoice-${orderId}.pdf`;
+  const invoicesDir = path.join(__dirname, 'invoices');
+  if (!fs.existsSync(invoicesDir)) fs.mkdirSync(invoicesDir);
+  fs.writeFileSync(path.join(invoicesDir, invoiceFileName), result.pdf, 'base64');
+  // Return a route that forces download.
+  return `/download-invoice/${invoiceFileName}`;
+};
+
+// ------------------------------
+//      AUTH ROUTES
+// ------------------------------
 app.get('/login', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'auth.html'));
 });
@@ -213,10 +261,9 @@ app.post('/verify-otp', (req, res) => {
   );
 });
 
-// ======================
+// ------------------------------
 //   PRODUCT + CART ROUTES
-// ======================
-
+// ------------------------------
 app.post('/add-product', (req, res) => {
   const { name, price, specifications, stock, image_url } = req.body;
   const imagePath = image_url; // Directly use the URL
@@ -229,7 +276,6 @@ app.post('/add-product', (req, res) => {
       res.redirect('/admin/manage-products.html');
     }
   );
- 
 });
 
 // NEW UPDATE PRODUCT ROUTE
@@ -284,9 +330,9 @@ app.delete('/admin/delete-product/:id', (req, res) => {
   });
 });
 
-// ======================
+// ------------------------------
 //       CART
-// ======================
+// ------------------------------
 app.post('/add-to-cart', (req, res) => {
   if (!req.session.userId) return res.status(401).json({ message: 'Please login first' });
 
@@ -356,20 +402,22 @@ app.post('/remove-from-cart', (req, res) => {
   );
 });
 
-// ======================
+// ------------------------------
 //    CHECKOUT ROUTES
-// ======================
+// ------------------------------
 app.post('/checkout', async (req, res) => {
   if (!req.session.userId) return res.status(401).json({ message: 'Please login first' });
 
   try {
     const { paymentMethod } = req.body;
 
+    // 1) Get cart items
     const cartItems = await new Promise((resolve, reject) => {
-      productDB.query(`SELECT p.id, p.price, c.quantity, p.stock, p.name
-        FROM cart c 
-        JOIN products p ON c.product_id = p.id 
-        WHERE c.user_id = ?`,
+      productDB.query(
+        `SELECT p.id, p.name, p.price, p.stock, c.quantity
+         FROM cart c
+         JOIN products p ON c.product_id = p.id
+         WHERE c.user_id = ?`,
         [req.session.userId],
         (err, results) => err ? reject(err) : resolve(results)
       );
@@ -379,6 +427,7 @@ app.post('/checkout', async (req, res) => {
       return res.status(400).json({ message: 'Cart is empty' });
     }
 
+    // 2) Check stock for each item
     for (const item of cartItems) {
       if (item.quantity > item.stock) {
         return res.status(400).json({
@@ -387,17 +436,34 @@ app.post('/checkout', async (req, res) => {
       }
     }
 
+    // 3) Calculate total amount
     const total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     const orderStatus = paymentMethod === 'cod' ? 'verified' : 'pending';
 
+    // 4) Insert order into orders table
     const orderResult = await new Promise((resolve, reject) => {
-      productDB.query(`INSERT INTO orders (user_id, username, total_amount, status, payment_method) 
-        VALUES (?, ?, ?, ?, ?)`,
+      productDB.query(
+        `INSERT INTO orders (user_id, username, total_amount, status, payment_method)
+         VALUES (?, ?, ?, ?, ?)`,
         [req.session.userId, req.session.username, total, orderStatus, paymentMethod],
         (err, result) => err ? reject(err) : resolve(result)
       );
     });
+    const orderId = orderResult.insertId;
 
+    // 5) Insert each cart item into order_items table
+    for (const item of cartItems) {
+      await new Promise((resolve, reject) => {
+        productDB.query(
+          `INSERT INTO order_items (order_id, product_id, quantity, price)
+           VALUES (?, ?, ?, ?)`,
+          [orderId, item.id, item.quantity, item.price],
+          (err) => err ? reject(err) : resolve()
+        );
+      });
+    }
+
+    // 6) Update product stock
     for (const item of cartItems) {
       await new Promise((resolve, reject) => {
         productDB.query(
@@ -408,6 +474,7 @@ app.post('/checkout', async (req, res) => {
       });
     }
 
+    // 7) Clear the user's cart
     await new Promise((resolve, reject) => {
       productDB.query(
         'DELETE FROM cart WHERE user_id = ?',
@@ -416,14 +483,15 @@ app.post('/checkout', async (req, res) => {
       );
     });
 
-    const orderId = orderResult.insertId;
+    // 8) For UPI payments, generate a QR code
     if (paymentMethod === 'upi') {
       await generateQRCode(total, req.session.username, orderId);
     }
 
-    res.json({ 
-      success: true, 
-      orderId, 
+    // 9) Return order info (invoice will be generated later on transaction submission)
+    res.json({
+      success: true,
+      orderId,
       username: req.session.username,
       paymentMethod
     });
@@ -434,9 +502,9 @@ app.post('/checkout', async (req, res) => {
   }
 });
 
-// ======================
+// ------------------------------
 //    TRANSACTION ROUTES
-// ======================
+// ------------------------------
 app.post('/submit-transaction', (req, res) => {
   if (!req.session.userId) return res.status(401).json({ message: 'Please login first' });
 
@@ -456,14 +524,37 @@ app.post('/submit-transaction', (req, res) => {
       if (result.affectedRows === 0) {
         return res.json({ success: false, message: 'Order not found or not authorized' });
       }
-      res.json({ success: true });
+      // Retrieve order items from order_items to generate invoice
+      productDB.query(
+        `SELECT p.name, oi.quantity, oi.price
+         FROM order_items oi
+         JOIN products p ON oi.product_id = p.id
+         WHERE oi.order_id = ?`,
+        [orderId],
+        async (err, items) => {
+          if (err) {
+            console.error('Error fetching order items:', err);
+            return res.status(500).json({ success: false, message: 'Internal server error' });
+          }
+          if (items.length === 0) {
+            return res.json({ success: true, invoiceUrl: "" });
+          }
+          try {
+            const invoiceUrl = await generateInvoiceWithItems(orderId, req.session.username, items);
+            res.json({ success: true, invoiceUrl });
+          } catch (err) {
+            console.error("Invoice generation error:", err);
+            res.json({ success: true, invoiceUrl: "" });
+          }
+        }
+      );
     }
   );
 });
 
-// ======================
+// ------------------------------
 //    ADMIN ROUTES
-// ======================
+// ------------------------------
 app.get('/admin/orders', (req, res) => {
   productDB.query(
     'SELECT * FROM orders WHERE status = "pending_verification"',
@@ -486,9 +577,9 @@ app.post('/admin/verify-order/:orderId', (req, res) => {
   );
 });
 
-// ======================
+// ------------------------------
 //    PROTECTED ROUTES
-// ======================
+// ------------------------------
 app.get('/homepage', (req, res) => {
   res.render('homepage', { username: req.session.username });
 });
@@ -497,9 +588,9 @@ app.get('/admin', (req, res) => {
   res.redirect('/admin/manage-products.html');
 });
 
-// ======================
+// ------------------------------
 //    STATIC ROUTES
-// ======================
+// ------------------------------
 app.get('/products-page', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'products.html'));
 });
@@ -513,18 +604,31 @@ app.get('/payment/:orderId', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'payment.html'));
 });
 
-// ======================
+// ------------------------------
+//      DOWNLOAD INVOICE ROUTE
+// ------------------------------
+app.get('/download-invoice/:filename', (req, res) => {
+  const filename = req.params.filename;
+  const filePath = path.join(__dirname, 'invoices', filename);
+  res.download(filePath, filename, (err) => {
+    if (err) {
+      console.error('Error sending file:', err);
+      res.status(500).send('Error downloading file.');
+    }
+  });
+});
+
+// ------------------------------
 //      LOGOUT
-// ======================
+// ------------------------------
 app.get('/logout', (req, res) => {
   req.session.destroy();
   res.redirect('/login');
 });
 
-
-// ======================
+// ------------------------------
 //    ADMIN ORDER HISTORY
-// ======================
+// ------------------------------
 app.get('/admin/order-history', (req, res) => {
   productDB.query(
     'SELECT * FROM orders ORDER BY order_date DESC',
@@ -535,26 +639,55 @@ app.get('/admin/order-history', (req, res) => {
   );
 });
 
+// ------------------------------
+//   USER ORDERS
+// ------------------------------
+app.get('/api/orders', (req, res) => {
+  if (!req.session.userId) return res.status(401).json({ message: 'Please login first' });
 
-// ======================
-//    START SERVER
-// ======================
+  productDB.query(
+    'SELECT * FROM orders WHERE user_id = ? ORDER BY order_date DESC',
+    [req.session.userId],
+    (err, orders) => {
+      if (err) return res.status(500).json({ message: 'Internal Server Error' });
+
+      if (orders.length === 0) return res.json([]);
+
+      let processedCount = 0;
+      orders.forEach((order, index) => {
+        productDB.query(
+          `SELECT p.name, p.image, oi.quantity, oi.price 
+           FROM order_items oi 
+           JOIN products p ON oi.product_id = p.id 
+           WHERE oi.order_id = ?`,
+          [order.id],
+          (err, items) => {
+            if (err) {
+              console.error(`Error fetching items for order ${order.id}:`, err);
+              orders[index].items = [];
+            } else {
+              orders[index].items = items;
+            }
+            processedCount++;
+            if (processedCount === orders.length) {
+              res.json(orders);
+            }
+          }
+        );
+      });
+    }
+  );
+});
+
+// ------------------------------
+//      START SERVER
+// ------------------------------
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-
-
-
-
-
-
-
-
-
-
-
 app.get('/', (req, res) => {
-  res.send('Welcome to Phone World!');
+ 
+  res.redirect('/homepage');
 });
