@@ -9,7 +9,8 @@ const qrcode = require('qrcode');
 const fs = require('fs');
 const easyinvoice = require('easyinvoice');
 
-require('dotenv').config();
+require('dotenv').config({ path: '.git/.env' });
+
 
 const app = express();
 
